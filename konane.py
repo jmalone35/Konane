@@ -397,4 +397,4 @@ class SimplePlayer(Konane, Player):
 
 
 game = Konane(8)
-game.playNGames(1, HumanPlayer(), RandomPlayer(8), 1)
+game.playNGames(1, SimplePlayer(8), RandomPlayer(8), 1)
