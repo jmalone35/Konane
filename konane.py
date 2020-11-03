@@ -5,6 +5,7 @@
 import random
 import copy
 import abc
+import traceback
 
 class KonaneError(AttributeError):
     """
@@ -250,6 +251,7 @@ class Konane:
                 move = p1.getMove(self.board)
             except Exception as e:
                 print ("player B is forfeiting because of error:", str(e))
+                
                 move = []
             if move == []:
                 result = 'W'

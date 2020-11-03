@@ -13,44 +13,60 @@ class MinimaxPlayer(Konane, Player):
             self.name = "KingOfGames1"
         else:
             self.name = "KingOfGames2"
+
+    def eval(self, board):
+        n = len(board)
+        if n == 0:
+            return (0)
+        else:
+            return (self.countSymbol(board, 'B'))
+
     def MiniMax(self, board, depth, maximizingPlayer):
         #return best move
+        
         if (depth == 0 or self.generateMoves(board, self.side) == []):
-            return self.eval (board)
+            return (self.eval (board), [])
         
         if (maximizingPlayer):
             value = float('-inf')
             miniMaxBoard = board
             #Get all possible moves
-            #Call max on each one with decramented depth
+            #Call max on each one with decramented depth        
             moves = self.generateMoves(board, self.side)
+            if len(moves) == 0:
+                return (-float('inf'), [])
             for move in moves:
-                miniMaxMove = self.MiniMax(move, (depth - 1), False)
-                if(value < miniMaxMove[0]):
+                miniMaxMove = self.MiniMax(self.nextBoard(board, self.side, move), (depth - 1), False)
+                if(value <= miniMaxMove[0]):
                     value = miniMaxMove[0]
-                    MiniMaxBoard = miniMaxMove[1] 
+                    miniMaxBoard = move 
 
-            return (value, MiniMaxBoard)
+            return (value, miniMaxBoard)
         else:
+            otherSide = ''
+            if(self.side == 'B'):
+                otherSide = 'W'
+            else:
+                otherSide = 'B'
             value = float('inf')
             miniMaxBoard = board
-            moves = self.generateMoves(board, self.side)
+            moves = self.generateMoves(board, otherSide)
+            if len(moves) == 0:
+                return (float('inf'), [])        
             for move in moves:
-                miniMaxMove = self.MiniMax(move, (depth - 1), True)
-                if(value > miniMaxMove[0]):
+                miniMaxMove = self.MiniMax(self.nextBoard(board, otherSide, move), (depth - 1), True)
+                if(value >= miniMaxMove[0]):
                     value = miniMaxMove[0]
-                    miniMaxBoard  = miniMaxMove[1] 
+                    miniMaxBoard  = move
             
-            return (value, MiniMaxBoard)      
+            return (value, miniMaxBoard)      
     def getMove(self, board):
         return self.MiniMax(board, self.limit, True)[1]
         #complete this
 
-    def eval(self, board):
-        moves = self.generateMoves(board, self.side)
-        n = len(moves)
-        if n == 0:
-            return (0, [])
-        else:
-            return (1, moves[0])
-        #complete this – thi  
+   
+        #complete this – thi
+        # 
+        # 
+game = Konane(8)
+game.playNGames(2, MinimaxPlayer(8,2), MinimaxPlayer(8,1), 0)  
