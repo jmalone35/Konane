@@ -24,16 +24,16 @@ class MinimaxPlayer(Konane, Player):
     def MiniMax(self, board, depth, maximizingPlayer):
         #return best move
         
-        if (depth == 0 or self.generateMoves(board, self.side) == []):
+        if (depth == 0):
             return (self.eval (board), [])
         
         if (maximizingPlayer):
-            value = float('-inf')
+            value = -float('inf')
             miniMaxBoard = board
             #Get all possible moves
             #Call max on each one with decramented depth        
             moves = self.generateMoves(board, self.side)
-            if len(moves) == 0:
+            if moves == []:
                 return (-float('inf'), [])
             for move in moves:
                 miniMaxMove = self.MiniMax(self.nextBoard(board, self.side, move), (depth - 1), False)
@@ -51,7 +51,7 @@ class MinimaxPlayer(Konane, Player):
             value = float('inf')
             miniMaxBoard = board
             moves = self.generateMoves(board, otherSide)
-            if len(moves) == 0:
+            if moves == []:
                 return (float('inf'), [])        
             for move in moves:
                 miniMaxMove = self.MiniMax(self.nextBoard(board, otherSide, move), (depth - 1), True)
@@ -59,7 +59,8 @@ class MinimaxPlayer(Konane, Player):
                     value = miniMaxMove[0]
                     miniMaxBoard  = move
             
-            return (value, miniMaxBoard)      
+            return (value, miniMaxBoard)
+
     def getMove(self, board):
         return self.MiniMax(board, self.limit, True)[1]
         #complete this
@@ -69,4 +70,4 @@ class MinimaxPlayer(Konane, Player):
         # 
         # 
 game = Konane(8)
-game.playNGames(2, MinimaxPlayer(8,2), MinimaxPlayer(8,1), 0)  
+game.playNGames(2, MinimaxPlayer(8,2), SimplePlayer(6), 0)  
